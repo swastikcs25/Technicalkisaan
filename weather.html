@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Weather - TechnicalKisaan</title>
+  <link rel="stylesheet" href="weather.css">
+
+  <style>
+    /* Tabs */
+    .tabs {
+      display: flex;
+      justify-content: center;
+      margin-top: 30px;
+    }
+
+    .tab {
+      padding: 12px 22px;
+      background: #2c7a7b;
+      color: white;
+      margin: 0 8px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .tab.active {
+      background: #169939;
+    }
+
+    .state-section {
+      display: none;
+      margin-top: 25px;
+    }
+
+    .city-box {
+      background: #f0fff4;
+      margin: 10px;
+      padding: 15px;
+      border-radius: 12px;
+      display: inline-block;
+      width: 180px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.12);
+    }
+
+    .city-grid {
+      text-align: center;
+    }
+
+    h4 {
+      margin-bottom: 8px;
+      color: #22543d;
+    }
+  </style>
+
+</head>
+<body>
+
+<header>
+  <h1>🌾 TechnicalKisaan 🌾</h1>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="weather.html">Weather</a>
+    <a href="market.html">Market Rates</a>
+    <a href="recommend.html">Crop Recommend</a>
+    <a href="forum.html">Community</a>
+  </nav>
+</header>
+
+<div class="container">
+  <h2>Weather Forecast</h2>
+
+  <!-- Search Section -->
+  <div class="weather-form">
+    <input type="text" id="village" placeholder="Village name">
+    <input type="text" id="city" placeholder="City name">
+    <input type="text" id="pincode" placeholder="Pincode">
+    <button id="getWeather">Get Weather</button>
+  </div>
+
+  <!-- Live Result -->
+  <div class="forecast-box">
+    <h3>Today's Forecast</h3>
+    <p class="forecast-item" id="temp">🌡 Temperature: -- °C</p>
+    <p class="forecast-item" id="humidity">💧 Humidity: -- %</p>
+    <p class="forecast-item" id="condition">🌧 Condition: --</p>
+  </div>
+</div>
+
+<!-- Tabs -->
+<div class="container">
+  <h2>State-Wise India Weather</h2>
+
+  <div class="tabs">
+    <div class="tab active" data-target="north">North</div>
+    <div class="tab" data-target="south">South</div>
+    <div class="tab" data-target="east">East</div>
+    <div class="tab" data-target="west">West</div>
+  </div>
+
+  <!-- All State Sections -->
+  <div id="north" class="state-section" style="display:block;">
+    <h3>North India</h3>
+    <div class="city-grid" id="northGrid"></div>
+  </div>
+
+  <div id="south" class="state-section">
+    <h3>South India</h3>
+    <div class="city-grid" id="southGrid"></div>
+  </div>
+
+  <div id="east" class="state-section">
+    <h3>East India</h3>
+    <div class="city-grid" id="eastGrid"></div>
+  </div>
+
+  <div id="west" class="state-section">
+    <h3>West India</h3>
+    <div class="city-grid" id="westGrid"></div>
+  </div>
+
+</div>
+
+<script>
+const apiKey = "af48cb7355b5fff16307dc37ad8e2fbc";
+
+/* ---------------- Search Weather ---------------- */
+document.getElementById("getWeather").addEventListener("click", () => {
+  const village = document.getElementById("village").value.trim();
+  const city = document.getElementById("city").value.trim();
+  const pincode = document.getElementById("pincode").value.trim();
+  const location = city || village || pincode;
+
+  if (!location) {
+    alert("Please enter a village, city or pincode!");
+    return;
+  }
+
+  fetch(`https://api.openweathermap.org/data/2.5/weather?q=${location},IN&appid=${apiKey}&units=metric`)
+    .then(res => res.json())
+    .then(data => {
+      if (data.cod === "404") {
+        alert("Location not found!");
+        return;
+      }
+      document.getElementById("temp").textContent = `🌡 Temperature: ${data.main.temp} °C`;
+      document.getElementById("humidity").textContent = `💧 Humidity: ${data.main.humidity} %`;
+      document.getElementById("condition").textContent = `🌧 Condition: ${data.weather[0].description}`;
+    })
+    .catch(() => alert("Error fetching weather."));
+});
+
+/* --------------- State-Wise Cities ------------------ */
+const northCities = ["Delhi","Jaipur","Chandigarh","Lucknow","Dehradun","Srinagar"];
+const southCities = ["Chennai","Bengaluru","Hyderabad","Kochi","Thiruvananthapuram","Coimbatore"];
+const eastCities  = ["Kolkata","Patna","Bhubaneswar","Ranchi","Guwahati","Agartala"];
+const westCities  = ["Mumbai","Ahmedabad","Pune","Surat","Nagpur","Goa"];
+
+function loadCities(list, elementId) {
+  list.forEach(city => {
+    fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city},IN&appid=${apiKey}&units=metric`)
+      .then(res => res.json())
+      .then(data => {
+        const box = document.createElement("div");
+        box.className = "city-box";
+
+        box.innerHTML = `
+          <h4>${city}</h4>
+          <p>🌡 ${data.main.temp} °C</p>
+          <p>💧 ${data.main.humidity} %</p>
+          <p>☁️ ${data.weather[0].main}</p>
+        `;
+        document.getElementById(elementId).appendChild(box);
+      });
+  });
+}
+
+loadCities(northCities, "northGrid");
+loadCities(southCities, "southGrid");
+loadCities(eastCities, "eastGrid");
+loadCities(westCities, "westGrid");
+
+/* ---------------- Tabs Functionality ------------------ */
+document.querySelectorAll(".tab").forEach(tab => {
+  tab.addEventListener("click", () => {
+    document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+    tab.classList.add("active");
+
+    document.querySelectorAll(".state-section").forEach(sec => sec.style.display = "none");
+    document.getElementById(tab.dataset.target).style.display = "block";
+  });
+});
+</script>
+
+</body>
+</html>

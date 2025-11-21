@@ -1,0 +1,174 @@
+/* General Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  background: linear-gradient(135deg, #dff1ff, #f9f9f9);
+  color: #333;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* Header */
+header {
+  background: linear-gradient(to right, #169939, #2c7a7b);
+  color: white;
+  padding: 20px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom-left-radius: 25px;
+  border-bottom-right-radius: 25px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+header h1 {
+  font-size: 2rem;
+  font-weight: bold;
+  letter-spacing: 1px;
+  animation: fadeInDown 1s ease-in-out;
+}
+
+/* Navigation */
+nav a {
+  color: white;
+  text-decoration: none;
+  margin: 0 15px;
+  font-size: 1.05rem;
+  padding: 6px 10px;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+nav a:hover {
+  color: #ffd166;
+  background: rgba(255, 209, 102, 0.2);
+  transform: scale(1.1);
+}
+
+/* Main Container */
+.container {
+  max-width: 850px;
+  margin: 50px auto;
+  background: #ffffff;
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.container:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
+}
+
+.container h2 {
+  color: #2c7a7b;
+  margin-bottom: 25px;
+  font-size: 1.8rem;
+  position: relative;
+}
+
+.container h2::after {
+  content: "";
+  width: 60px;
+  height: 3px;
+  background: #169939;
+  display: block;
+  margin: 10px auto 0;
+  border-radius: 2px;
+}
+
+/* Form Styling */
+form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+form input {
+  padding: 12px 15px;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  outline: none;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+form input:focus {
+  border-color: #2c7a7b;
+  box-shadow: 0 0 8px rgba(44, 122, 123, 0.4);
+}
+
+form button {
+  background: linear-gradient(to right, #2c7a7b, #169939);
+  color: white;
+  border: none;
+  padding: 12px 22px;
+  border-radius: 10px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+form button:hover {
+  background: linear-gradient(to right, #225b5c, #14722c);
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+/* Forecast Section */
+.container div {
+  background: #f0fdf4;
+  padding: 25px;
+  border-radius: 15px;
+  border: 1px solid #c6f6d5;
+  margin-top: 20px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+}
+
+.container div:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+  background: #e6f7e9;
+}
+
+.container h3 {
+  margin-bottom: 15px;
+  color: #22543d;
+  font-size: 1.3rem;
+}
+
+.container p {
+  margin: 7px 0;
+  font-size: 1.1rem;
+}
+
+/* Weather Icon Placeholder */
+.weather-icon {
+  font-size: 2.2rem;
+  margin-bottom: 12px;
+  color: #169939;
+}
+
+/* Animations */
+@keyframes fadeInDown {
+  from {
+      opacity: 0;
+      transform: translateY(-20px);
+  }
+  to {
+      opacity: 1;
+      transform: translateY(0);
+  }
+}

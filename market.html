@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Market Rates - TechnicalKisaan</title>
+  <link rel="stylesheet" href="market.css">
+</head>
+<body>
+<header>
+  <h1>🌾 TechnicalKisaan</h1>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="weather.html">Weather</a>
+    <a href="market.html">Market Rates</a>
+    <a href="recommend.html">Crop Recommend</a>
+    <a href="forum.html">Community</a>
+  </nav>
+</header>
+
+<div class="container">
+  <h2>Market Prices</h2>
+  <form>
+    <input type="text" placeholder="Crop name (e.g. Wheat)">
+    <button type="button">Search Rates</button>
+  </form>
+
+  <table border="1" width="100%" cellpadding="8">
+    <tr>
+      <th>Market</th>
+      <th>Crop</th>
+      <th>Price (₹/Quintal)</th>
+      <th>Date</th>
+    </tr>
+  </table>
+</div>
+<script>
+  async function loadMandiData() {
+      const apiKey = "579b464db66ec23bdd00000192a49710b3764fd75841e478949559dc";
+      const url = `https://api.data.gov.in/resource/9ef84268-d588-465a-a308-a864a43d0070?api-key=${apiKey}&format=json&limit=50`;
+  
+      const table = document.querySelector("table");
+  
+      try {
+          const res = await fetch(url);
+          const data = await res.json();
+  
+          const items = data.records;
+
+          table.innerHTML = `
+          <tr>
+              <th>Market</th>
+              <th>Crop</th>
+              <th>Price (₹/Quintal)</th>
+              <th>Date</th>
+          </tr>`;
+
+          items.forEach(row => {
+              table.innerHTML += `
+              <tr>
+                  <td>${row.market}</td>
+                  <td>${row.commodity}</td>
+                  <td>${row.modal_price}</td>
+                  <td>${row.arrival_date}</td>
+              </tr>`;
+          });
+  
+      } catch (error) {
+          console.log("Error fetching mandi data:", error);
+      }
+  }
+  loadMandiData();
+  </script>
+</body>
+</html>
